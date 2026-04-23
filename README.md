@@ -7,7 +7,7 @@ A web-based platform for centralized discovery and management of student opportu
 ## Team Members
 
 | Name | Role |
-|---|---|---|
+|------|------|
 | Juwairiya Haroon | Database Architect · Search & Filter · Backend Core |
 | Zainab Hashmi | Triggers · Transactions · Frontend Auth & Bookmarks |
 | Muskan Ejaz | Recommendations · Analytics · Admin Dashboard |
