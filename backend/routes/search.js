@@ -7,7 +7,7 @@ const verifyToken = require('../middleware/auth');
 // GET /api/search
 // Query params: category_id, dept_id, opp_mode, is_paid, deadline
 // Example: /api/search?category_id=1&opp_mode=remote
-router.get('/', verifyToken, async (req, res) => {
+router.get('/', async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
