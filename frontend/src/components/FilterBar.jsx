@@ -60,6 +60,20 @@ export default function FilterBar({ filters, onFilterChange, onSearch, searchTer
                            font-semibold hover:bg-indigo-700 transition">
                 Search
             </button>
+
+            {/* Department filter */}
+            <select
+                value={filters.dept_id}
+                onChange={e => onFilterChange('dept_id', e.target.value)}
+                className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                <option value="">All Departments</option>
+                <option value="1">Computer Science</option>
+                <option value="2">Business Administration</option>
+                <option value="3">Electrical Engineering</option>
+                <option value="4">Media Studies</option>
+                <option value="5">Mathematics</option>
+                <option value="6">Psychology</option>
+            </select>
         </div>
     );
 }

@@ -12,6 +12,7 @@ export default function ListingsPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filters, setFilters] = useState({
         category_id: '',
+        dept_id: '',
         opp_mode: '',
         is_paid: ''
     });
