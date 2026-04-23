@@ -12,14 +12,12 @@ export default function DetailPage() {
     useEffect(() => {
         async function fetchOpportunity() {
             try {
-                const response = await axios.get('/api/search');
-                const all = response.data.data;
-                const found = all.find(o => o.opp_id === parseInt(id));
-                if (found) {
-                    setOpportunity(found);
-                } else {
-                    setError('Opportunity not found.');
-                }
+                const response = await axios.get(`/api/search/${id}`);
+                setOpportunity(response.data.data);
+
+                // Log the view — trigger will increment views_count automatically
+                await axios.post(`/api/search/${id}/view`);
+
             } catch (err) {
                 setError('Failed to load opportunity details.');
                 console.error(err);

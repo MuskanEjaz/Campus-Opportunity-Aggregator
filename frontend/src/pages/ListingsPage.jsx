@@ -40,9 +40,15 @@ export default function ListingsPage() {
         }
     }
 
-    // Fetch on first load
     useEffect(() => {
         fetchOpportunities();
+    }, []);
+
+    // Refetch when user comes back to this page
+    useEffect(() => {
+        const handleFocus = () => fetchOpportunities();
+        window.addEventListener('focus', handleFocus);
+        return () => window.removeEventListener('focus', handleFocus);
     }, []);
 
     // Filter by search term client-side
