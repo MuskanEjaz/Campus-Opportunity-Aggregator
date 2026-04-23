@@ -1,5 +1,5 @@
 const oracledb = require('oracledb');
-require('dotenv').config();
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 
 // Connection pool — reuses connections instead of creating a new one 
 // for every single request (much faster)

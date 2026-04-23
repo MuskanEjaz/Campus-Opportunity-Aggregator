@@ -29,8 +29,8 @@ router.get('/', verifyToken, async (req, res) => {
                 dept_id:     { val: req.query.dept_id ? 
                                 Number(req.query.dept_id) : null },
                 opp_mode:    { val: req.query.opp_mode || null },
-                is_paid:     { val: req.query.is_paid !== undefined ? 
-                                Number(req.query.is_paid) : null },
+                is_paid: { val: (req.query.is_paid !== undefined && req.query.is_paid !== '') ? 
+                            Number(req.query.is_paid) : null },
                 deadline:    { val: req.query.deadline ? 
                                 new Date(req.query.deadline) : null,
                                type: oracledb.TIMESTAMP },
