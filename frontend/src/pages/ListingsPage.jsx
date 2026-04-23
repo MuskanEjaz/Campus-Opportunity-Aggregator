@@ -25,6 +25,7 @@ export default function ListingsPage() {
             // Build query string from filters
             const params = new URLSearchParams();
             if (filters.category_id) params.append('category_id', filters.category_id);
+            if (filters.dept_id)     params.append('dept_id', filters.dept_id);
             if (filters.opp_mode)    params.append('opp_mode', filters.opp_mode);
             if (filters.is_paid !== '') params.append('is_paid', filters.is_paid);
 
