@@ -61,7 +61,6 @@ export default function ListingsPage() {
                 <h1 className="text-3xl font-bold text-gray-800">Browse Opportunities</h1>
                 <p className="text-gray-500 mt-1">Discover internships, scholarships, hackathons and more</p>
             </div>
-
             <div className="mb-6">
                 <FilterBar
                     filters={filters}
@@ -71,25 +70,21 @@ export default function ListingsPage() {
                     onSearchChange={setSearchTerm}
                 />
             </div>
-
             {!loading && !error && (
                 <p className="text-sm text-gray-400 mb-4">
                     Showing {filtered.length} opportunit{filtered.length === 1 ? 'y' : 'ies'}
                 </p>
             )}
-
             {loading && (
                 <div className="flex justify-center items-center py-20">
                     <div className="animate-spin rounded-full h-10 w-10 border-4 border-indigo-500 border-t-transparent"/>
                 </div>
             )}
-
             {error && (
                 <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl p-4 text-sm">
                     {error}
                 </div>
             )}
-
             {!loading && !error && filtered.length === 0 && (
                 <div className="text-center py-20">
                     <p className="text-5xl mb-4">🔍</p>
@@ -97,7 +92,6 @@ export default function ListingsPage() {
                     <p className="text-gray-400 text-sm mt-1">Try adjusting your filters</p>
                 </div>
             )}
-
             {!loading && !error && filtered.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     {filtered.map(opp => (
