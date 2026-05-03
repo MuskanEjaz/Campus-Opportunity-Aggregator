@@ -106,7 +106,7 @@ router.get('/notifications', auth, async (req, res) => {
     const conn = await pool.getConnection();
 
     const result = await conn.execute(
-      `SELECT notification_id, message, is_read, created_at
+      `SELECT notif_id, message, is_read, created_at
        FROM notifications
        WHERE user_id = :user_id
        ORDER BY created_at DESC

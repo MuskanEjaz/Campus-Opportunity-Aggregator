@@ -6,10 +6,10 @@ const db = require('../config/db');
 
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
-  const { full_name, email, password, dept_id } = req.body;
+  const { user_name, email, password, dept_id } = req.body;
 
-  if (!full_name || !email || !password) {
-    return res.status(400).json({ message: 'Full name, email, and password are required.' });
+  if (!user_name || !email || !password || !dept_id) {
+    return res.status(400).json({ message: 'Username, email, password, and department are required.' });
   }
 
   try {
@@ -27,19 +27,13 @@ router.post('/register', async (req, res) => {
       return res.status(409).json({ message: 'An account with this email already exists.' });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert the new user (role_id = 2 means student)
+    // role_id = 2 means student
     await conn.execute(
-      `INSERT INTO users (full_name, email, password_hash, role_id, dept_id)
-       VALUES (:full_name, :email, :password_hash, 2, :dept_id)`,
-      {
-        full_name,
-        email,
-        password_hash: hashedPassword,
-        dept_id: dept_id || null
-      },
+      `INSERT INTO users (user_name, email, password_hash, role_id, dept_id)
+       VALUES (:user_name, :email, :password_hash, 2, :dept_id)`,
+      { user_name, email, password_hash: hashedPassword, dept_id },
       { autoCommit: true }
     );
 
@@ -65,7 +59,8 @@ router.post('/login', async (req, res) => {
     const conn = await pool.getConnection();
 
     const result = await conn.execute(
-      `SELECT user_id, full_name, email, password_hash, role_id FROM users WHERE email = :email`,
+      `SELECT user_id, user_name, email, password_hash, role_id
+       FROM users WHERE email = :email`,
       [email]
     );
 
@@ -75,18 +70,15 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
-    const user = result.rows[0];
-    // Oracle returns rows as arrays: [user_id, full_name, email, password_hash, role_id]
-    const [user_id, full_name, userEmail, password_hash, role_id] = user;
+    const [user_id, user_name, userEmail, password_hash, role_id] = result.rows[0];
 
     const passwordMatch = await bcrypt.compare(password, password_hash);
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
-    // Sign the JWT token
     const token = jwt.sign(
-      { user_id, full_name, email: userEmail, role_id },
+      { user_id, user_name, email: userEmail, role_id },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -94,7 +86,7 @@ router.post('/login', async (req, res) => {
     res.json({
       message: 'Login successful.',
       token,
-      user: { user_id, full_name, email: userEmail, role_id }
+      user: { user_id, user_name, email: userEmail, role_id }
     });
 
   } catch (err) {
