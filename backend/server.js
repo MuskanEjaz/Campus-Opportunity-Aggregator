@@ -1,9 +1,16 @@
 const express = require('express');
+const authRoutes = require('./routes/auth');
+const bookmarkRoutes = require('./routes/bookmarks');
 const cors = require('cors');
 require('dotenv').config({ path: require('path').resolve(__dirname, '.env') });
 const { initializePool } = require('./config/db');
 
 const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use('/api/auth', authRoutes);
+app.use('/api/bookmarks', bookmarkRoutes);
 
 app.use(cors());
 app.use(express.json());
