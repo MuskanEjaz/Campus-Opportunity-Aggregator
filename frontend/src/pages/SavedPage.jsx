@@ -1,16 +1,22 @@
 import { useEffect, useState, useContext } from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useAuth } from '../context/AuthContext';
 import OpportunityCard from "../components/OpportunityCard";
 
 export default function SavedPage() {
   const { token } = useAuth();
 =======
+=======
+>>>>>>> aa191a843b251323090a79122a7c3045f9987c59
 import { AuthContext } from "../context/AuthContext";
 import OpportunityCard from "../components/OpportunityCard";
 
 export default function SavedPage() {
   const { token } = useContext(AuthContext);
+<<<<<<< HEAD
+>>>>>>> aa191a843b251323090a79122a7c3045f9987c59
+=======
 >>>>>>> aa191a843b251323090a79122a7c3045f9987c59
   const [saved, setSaved] = useState([]);
   const [loading, setLoading] = useState(true);

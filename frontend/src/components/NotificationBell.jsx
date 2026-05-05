@@ -1,14 +1,20 @@
 import { useEffect, useState, useContext, useRef } from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useAuth } from '../context/AuthContext';
 
 export default function NotificationBell() {
   const { token } = useAuth();
 =======
+=======
+>>>>>>> aa191a843b251323090a79122a7c3045f9987c59
 import { AuthContext } from "../context/AuthContext";
 
 export default function NotificationBell() {
   const { token } = useContext(AuthContext);
+<<<<<<< HEAD
+>>>>>>> aa191a843b251323090a79122a7c3045f9987c59
+=======
 >>>>>>> aa191a843b251323090a79122a7c3045f9987c59
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);

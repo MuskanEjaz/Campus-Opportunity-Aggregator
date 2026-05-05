@@ -13,12 +13,7 @@ router.post('/register', async (req, res) => {
   }
 
   try {
-<<<<<<< HEAD
     const conn = await db.getConnection();
-=======
-    const pool = await db.getPool();
-    const conn = await pool.getConnection();
->>>>>>> aa191a843b251323090a79122a7c3045f9987c59
 
     // Check if email already exists
     const existing = await conn.execute(
@@ -59,12 +54,7 @@ router.post('/login', async (req, res) => {
   }
 
   try {
-<<<<<<< HEAD
     const conn = await db.getConnection();
-=======
-    const pool = await db.getPool();
-    const conn = await pool.getConnection();
->>>>>>> aa191a843b251323090a79122a7c3045f9987c59
 
     const result = await conn.execute(
       `SELECT user_id, user_name, email, password_hash, role_id

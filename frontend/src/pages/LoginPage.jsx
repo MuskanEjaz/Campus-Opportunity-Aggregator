@@ -1,15 +1,21 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
   const { login } = useAuth();
 =======
+=======
+>>>>>>> aa191a843b251323090a79122a7c3045f9987c59
 import { AuthContext } from "../context/AuthContext";
 
 export default function LoginPage() {
   const { login } = useContext(AuthContext);
+<<<<<<< HEAD
+>>>>>>> aa191a843b251323090a79122a7c3045f9987c59
+=======
 >>>>>>> aa191a843b251323090a79122a7c3045f9987c59
   const navigate = useNavigate();
 
