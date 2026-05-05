@@ -339,3 +339,29 @@ BEGIN
     WHERE opp_id = :NEW.opp_id;
 END;
 /
+
+-- Trigger: auto-expire opportunities past their deadline
+CREATE OR REPLACE TRIGGER trg_auto_expire
+BEFORE INSERT OR UPDATE ON opportunities
+FOR EACH ROW
+BEGIN
+  IF :NEW.deadline < SYSTIMESTAMP AND :NEW.status = 'active' THEN
+    :NEW.status := 'expired';
+  END IF;
+END;
+/
+
+-- Trigger: notify all students when a new opportunity is posted
+CREATE OR REPLACE TRIGGER trg_notify_on_new
+AFTER INSERT ON opportunities
+FOR EACH ROW
+BEGIN
+  INSERT INTO notifications (user_id, opp_id, message, is_read)
+  SELECT user_id,
+         :NEW.opp_id,
+         'New opportunity posted: ' || :NEW.title,
+         0
+  FROM users
+  WHERE role_id = 2;
+END;
+/

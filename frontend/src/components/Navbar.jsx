@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import NotificationBell from "./NotificationBell";
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -23,12 +24,15 @@ export default function Navbar() {
 
                 {/* Desktop Links */}
                 <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-                    <Link to="/opportunities"
-                        className="hover:text-indigo-200 transition">
+                    <Link to="/opportunities" className="hover:text-indigo-200 transition">
                         Browse
                     </Link>
                     {user ? (
                         <>
+                            <Link to="/saved" className="hover:text-indigo-200 transition">
+                                Saved
+                            </Link>
+                            <NotificationBell />
                             <span className="text-indigo-200">
                                 Hello, {user.user_name}
                             </span>
@@ -40,11 +44,17 @@ export default function Navbar() {
                             </button>
                         </>
                     ) : (
-                        <Link to="/opportunities"
-                            className="bg-white text-indigo-700 px-4 py-1.5 rounded-full 
-                                       font-semibold hover:bg-indigo-100 transition">
-                            Login
-                        </Link>
+                        <>
+                            <Link to="/login"
+                                className="hover:text-indigo-200 transition">
+                                Login
+                            </Link>
+                            <Link to="/register"
+                                className="bg-white text-indigo-700 px-4 py-1.5 rounded-full 
+                                           font-semibold hover:bg-indigo-100 transition">
+                                Register
+                            </Link>
+                        </>
                     )}
                 </div>
 
@@ -72,16 +82,30 @@ export default function Navbar() {
                         Browse
                     </Link>
                     {user ? (
-                        <button onClick={handleLogout}
-                            className="text-left hover:text-indigo-200">
-                            Logout
-                        </button>
+                        <>
+                            <Link to="/saved"
+                                onClick={() => setMenuOpen(false)}
+                                className="hover:text-indigo-200">
+                                Saved
+                            </Link>
+                            <button onClick={handleLogout}
+                                className="text-left hover:text-indigo-200">
+                                Logout
+                            </button>
+                        </>
                     ) : (
-                        <Link to="/opportunities"
-                            onClick={() => setMenuOpen(false)}
-                            className="hover:text-indigo-200">
-                            Login
-                        </Link>
+                        <>
+                            <Link to="/login"
+                                onClick={() => setMenuOpen(false)}
+                                className="hover:text-indigo-200">
+                                Login
+                            </Link>
+                            <Link to="/register"
+                                onClick={() => setMenuOpen(false)}
+                                className="hover:text-indigo-200">
+                                Register
+                            </Link>
+                        </>
                     )}
                 </div>
             )}

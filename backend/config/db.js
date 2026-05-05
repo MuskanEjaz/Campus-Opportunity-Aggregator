@@ -1,6 +1,13 @@
 const oracledb = require('oracledb');
 require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 
+<<<<<<< HEAD
+function getPool() {
+    return oracledb.getPool();
+}
+
+=======
+>>>>>>> aa191a843b251323090a79122a7c3045f9987c59
 // Connection pool — reuses connections instead of creating a new one 
 // for every single request (much faster)
 async function initializePool() {
@@ -36,4 +43,8 @@ async function closeConnection(connection) {
     }
 }
 
+<<<<<<< HEAD
+module.exports = { initializePool, getConnection, closeConnection, getPool };
+=======
 module.exports = { initializePool, getConnection, closeConnection };
+>>>>>>> aa191a843b251323090a79122a7c3045f9987c59
