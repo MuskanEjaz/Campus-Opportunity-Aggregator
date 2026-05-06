@@ -1,9 +1,12 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import OpportunityCard from "../components/OpportunityCard";
 
 export default function SavedPage() {
   const { token } = useAuth();
+  const navigate = useNavigate();
   const [saved, setSaved] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -15,12 +18,11 @@ export default function SavedPage() {
       return;
     }
 
-    fetch("http://localhost:5000/api/bookmarks", {
-      headers: { Authorization: `Bearer ${token}` },
+    axios.get('/api/bookmarks', {
+      headers: { Authorization: `Bearer ${token}` }
     })
-      .then((res) => res.json())
-      .then((data) => {
-        setSaved(data);
+      .then(res => {
+        setSaved(res.data);
         setLoading(false);
       })
       .catch(() => {
@@ -29,20 +31,28 @@ export default function SavedPage() {
       });
   }, [token]);
 
-  const handleRemove = async (opp_id) => {
-    try {
-      await fetch(`http://localhost:5000/api/bookmarks/${opp_id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setSaved((prev) => prev.filter((o) => o.opp_id !== opp_id));
-    } catch {
-      alert("Could not remove bookmark.");
-    }
-  };
+  function handleUnsave(opp_id) {
+    setSaved(prev => prev.filter(o => o.opp_id !== opp_id));
+  }
 
-  if (loading) return <div className="p-8 text-center text-gray-500">Loading saved opportunities...</div>;
-  if (error)   return <div className="p-8 text-center text-red-500">{error}</div>;
+  if (loading) return (
+    <div className="flex justify-center items-center py-32">
+      <div className="animate-spin rounded-full h-10 w-10 border-4 border-indigo-500 border-t-transparent" />
+    </div>
+  );
+
+  if (error) return (
+    <div className="max-w-5xl mx-auto px-4 py-12 text-center">
+      <p className="text-red-500 mb-4">{error}</p>
+      {!token && (
+        <button
+          onClick={() => navigate('/login')}
+          className="bg-indigo-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-700 transition">
+          Log in
+        </button>
+      )}
+    </div>
+  );
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -53,19 +63,20 @@ export default function SavedPage() {
           <p className="text-4xl mb-3">🔖</p>
           <p className="text-lg font-medium">No saved opportunities yet</p>
           <p className="text-sm mt-1">Browse listings and click the bookmark icon to save them here.</p>
+          <button
+            onClick={() => navigate('/opportunities')}
+            className="mt-5 bg-indigo-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-700 transition">
+            Browse Opportunities
+          </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {saved.map((opp) => (
-            <div key={opp.opp_id} className="relative">
-              <OpportunityCard opportunity={opp} />
-              <button
-                onClick={() => handleRemove(opp.opp_id)}
-                className="absolute top-3 right-3 text-xs bg-red-100 text-red-600 hover:bg-red-200 px-2 py-1 rounded-full transition"
-              >
-                Remove
-              </button>
-            </div>
+          {saved.map(opp => (
+            <OpportunityCard
+              key={opp.opp_id}
+              opportunity={opp}
+              onUnsave={handleUnsave}
+            />
           ))}
         </div>
       )}
