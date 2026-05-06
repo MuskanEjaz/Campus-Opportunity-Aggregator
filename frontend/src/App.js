@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { SavedProvider } from './context/SavedContext';
 import Navbar from './components/Navbar';
 import ListingsPage from './pages/ListingsPage';
 import DetailPage from './pages/DetailPage';
@@ -12,7 +13,8 @@ function App() {
     return (
         <AuthProvider>
             <BrowserRouter>
-                <div className="min-h-screen bg-gray-50">
+                <SavedProvider>
+                <div className="app-background">
                     <Navbar />
                     <Routes>
                         <Route path="/" element={<Navigate to="/opportunities" />} />
@@ -24,6 +26,7 @@ function App() {
                         <Route path="/saved" element={<SavedPage />} />
                     </Routes>
                 </div>
+                </SavedProvider>
             </BrowserRouter>
         </AuthProvider>
     );

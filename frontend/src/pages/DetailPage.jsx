@@ -2,23 +2,24 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { useSaved } from '../context/SavedContext';
+
 
 export default function DetailPage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { token } = useAuth();
+    const { isSaved, markSaved, markUnsaved } = useSaved();
     const [opportunity, setOpportunity] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Save state
-    const [saved, setSaved] = useState(false);
-    const [saving, setSaving] = useState(false);
+    const saved = isSaved(Number(id));  // or isSaved(id) if your IDs are strings
 
     // Apply modal state
     const [showApply, setShowApply] = useState(false);
     const [applyForm, setApplyForm] = useState({ name: '', email: '', statement: '' });
-    const [applyStatus, setApplyStatus] = useState(null); // 'success' | 'error' | null
+    const [applyStatus, setApplyStatus] = useState(null);
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
@@ -41,6 +42,7 @@ export default function DetailPage() {
         const today = new Date();
         const deadlineDate = new Date(deadline);
         const daysLeft = Math.ceil((deadlineDate - today) / (1000 * 60 * 60 * 24));
+        if (daysLeft < 0) return 'bg-gray-100 text-gray-400 border-gray-200';  // ← add this
         if (daysLeft <= 3) return 'bg-red-100 text-red-700 border-red-200';
         if (daysLeft <= 7) return 'bg-yellow-100 text-yellow-700 border-yellow-200';
         return 'bg-green-100 text-green-700 border-green-200';
@@ -50,6 +52,7 @@ export default function DetailPage() {
         const today = new Date();
         const deadlineDate = new Date(deadline);
         const daysLeft = Math.ceil((deadlineDate - today) / (1000 * 60 * 60 * 24));
+        if (daysLeft < 0) return 'Deadline passed';
         if (daysLeft === 0) return 'Due today';
         if (daysLeft === 1) return '1 day left';
         return daysLeft + ' days left';
@@ -69,28 +72,6 @@ export default function DetailPage() {
         return colors[category] || 'bg-gray-100 text-gray-700';
     }
 
-    async function handleSave() {
-        if (!token) { navigate('/login'); return; }
-        setSaving(true);
-        try {
-            if (saved) {
-                await axios.delete(`/api/bookmarks/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setSaved(false);
-            } else {
-                await axios.post('/api/bookmarks', { opp_id: id }, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setSaved(true);
-            }
-        } catch (err) {
-            if (err.response?.status === 409) setSaved(true);
-        } finally {
-            setSaving(false);
-        }
-    }
-
     async function handleApplySubmit(e) {
         e.preventDefault();
         if (!applyForm.name || !applyForm.email || !applyForm.statement) return;
@@ -108,6 +89,24 @@ export default function DetailPage() {
         }
     }
 
+    async function handleSave() {
+        if (!token) { navigate('/login'); return; }
+        try {
+            if (saved) {
+                await axios.delete(`/api/bookmarks/${id}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                markUnsaved(Number(id));
+            } else {
+                await axios.post('/api/bookmarks', { opp_id: id }, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                markSaved(Number(id));
+            }
+        } catch (err) {
+            if (err.response?.status === 409) markSaved(Number(id));
+        }
+    }
     if (loading) {
         return (
             <div className="flex justify-center items-center py-32">
@@ -190,26 +189,17 @@ export default function DetailPage() {
                     </button>
                     <button
                         onClick={handleSave}
-                        disabled={saving}
-                        title={saved ? 'Remove from saved' : 'Save opportunity'}
-                        className={`w-12 h-12 flex items-center justify-center rounded-xl border-2 transition font-semibold
+                        title={saved ? 'Remove bookmark' : 'Save opportunity'}
+                        className={`w-12 h-12 flex items-center justify-center rounded-xl border-2 transition
                             ${saved
-                                ? 'border-indigo-300 bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
+                                ? 'border-indigo-300 bg-indigo-50 text-indigo-600 hover:bg-red-50 hover:border-red-200 hover:text-red-400'
                                 : 'border-gray-200 bg-white text-gray-400 hover:border-indigo-300 hover:text-indigo-500'
                             }`}>
-                        {saving ? (
-                            <span className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin inline-block" />
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill={saved ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                            </svg>
-                        )}
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill={saved ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                        </svg>
                     </button>
                 </div>
-
-                {saved && (
-                    <p className="text-xs text-indigo-500 text-center mt-2">✓ Saved to your bookmarks</p>
-                )}
 
                 <p className="text-xs text-gray-400 text-center mt-4">Posted on {createdFormatted}</p>
             </div>
