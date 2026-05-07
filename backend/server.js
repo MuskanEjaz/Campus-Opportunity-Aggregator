@@ -9,12 +9,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
 app.use('/api/auth', authRoutes);
 app.use('/api/bookmarks', bookmarkRoutes);
-
-app.use(cors());
-app.use(express.json());
-
 app.use('/api/search', require('./routes/search'));
 app.use('/api/admin', require('./routes/admin'));
 

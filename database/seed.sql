@@ -253,3 +253,11 @@ VALUES (2, 4, 'withdrawn');
 
 -- ========== COMMIT ALL ==========
 COMMIT;
+
+
+
+
+
+INSERT INTO users (user_name, email, password_hash, role_id, dept_id)
+VALUES ('admin', 'admin@campus.edu', '$2b$10$id6NiTunADCrYNlSi0hz3.f0OsLFCv4rVKwELKYi1gM2BPzIlPUkO', 1, 1);
+COMMIT;

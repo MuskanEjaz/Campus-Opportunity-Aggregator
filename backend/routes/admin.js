@@ -5,7 +5,7 @@ const { getConnection, closeConnection } = require('../config/db');
 const verifyToken = require('../middleware/auth');
 
 // GET /api/admin/stats — dashboard analytics
-router.get('/stats', async (req, res) => {
+router.get('/stats', verifyToken, async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
@@ -39,7 +39,7 @@ router.get('/stats', async (req, res) => {
 });
 
 // GET /api/admin/opportunities — all opportunities for admin
-router.get('/opportunities', async (req, res) => {
+router.get('/opportunities', verifyToken, async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
@@ -77,8 +77,57 @@ router.get('/opportunities', async (req, res) => {
     }
 });
 
+// POST /api/admin/opportunities — add a new opportunity
+router.post('/opportunities', verifyToken, async (req, res) => {
+    // Only admins (role_id = 1) can post opportunities
+    if (req.user.role_id !== 1) {
+        return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+
+    const { title, description, category_id, dept_id, deadline, opp_mode, is_paid } = req.body;
+
+    if (!title || !description || !category_id || !dept_id || !deadline || !opp_mode) {
+        return res.status(400).json({ success: false, message: 'All fields are required.' });
+    }
+
+    let connection;
+    try {
+        connection = await getConnection();
+
+        await connection.execute(
+            `INSERT INTO opportunities 
+                (title, description, category_id, dept_id, deadline, opp_mode, is_paid, posted_by, status)
+             VALUES 
+                (:title, :description, :category_id, :dept_id, :deadline, :opp_mode, :is_paid, :posted_by, 'active')`,
+            {
+                title,
+                description,
+                category_id:  Number(category_id),
+                dept_id:      Number(dept_id),
+                deadline:     new Date(deadline),
+                opp_mode,
+                is_paid:      is_paid ? 1 : 0,
+                posted_by:    req.user.user_id
+            },
+            { autoCommit: true }
+        );
+
+        res.status(201).json({ success: true, message: 'Opportunity posted successfully.' });
+
+    } catch (error) {
+        console.error('Post opportunity error:', error);
+        res.status(500).json({ success: false, message: 'Error posting opportunity.' });
+    } finally {
+        await closeConnection(connection);
+    }
+});
+
 // DELETE /api/admin/opportunities/:id
-router.delete('/opportunities/:id', async (req, res) => {
+router.delete('/opportunities/:id', verifyToken, async (req, res) => {
+    if (req.user.role_id !== 1) {
+        return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+
     let connection;
     try {
         connection = await getConnection();
@@ -99,9 +148,8 @@ router.delete('/opportunities/:id', async (req, res) => {
     }
 });
 
-
 // GET /api/admin/recommendations/:user_id
-router.get('/recommendations/:user_id', async (req, res) => {
+router.get('/recommendations/:user_id', verifyToken, async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
@@ -144,7 +192,7 @@ router.get('/recommendations/:user_id', async (req, res) => {
 });
 
 // GET /api/admin/expiring
-router.get('/expiring', async (req, res) => {
+router.get('/expiring', verifyToken, async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
