@@ -292,7 +292,9 @@ CREATE OR REPLACE PROCEDURE get_user_recommendations (
 AS
 BEGIN
     OPEN p_results FOR
-        SELECT DISTINCT o.opp_id, o.title, o.description, c.category_name, d.dept_name, o.deadline, o.opp_mode, o.is_paid, o.views_count, o.save_count, u.user_name AS posted_by, ROUND((o.views_count * 0.4) + (o.save_count * 0.6), 2) AS trend_score
+        SELECT DISTINCT o.opp_id, o.title, o.description, c.category_name, d.dept_name,
+         o.deadline, o.opp_mode, o.is_paid, o.views_count, o.save_count, 
+         u.user_name AS posted_by, ROUND((o.views_count * 0.4) + (o.save_count * 0.6), 2) AS trend_score
         FROM opportunities o
             JOIN categories c ON o.category_id = c.category_id
             JOIN departments d ON o.dept_id = d.dept_id
