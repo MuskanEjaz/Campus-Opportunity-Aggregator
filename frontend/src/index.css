@@ -1,0 +1,482 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #f5f3ff;
+  --bg-card: #ffffff;
+  --navy: #0f0e2b;
+  --navy-2: #1e1b4b;
+  --navy-3: #312e81;
+  --violet: #6d28d9;
+  --violet-light: #7c3aed;
+  --indigo: #4f46e5;
+  --indigo-light: #ede9fe;
+  --amber: #f59e0b;
+  --amber-light: #fffbeb;
+  --emerald: #059669;
+  --text-primary: #1a1035;
+  --text-secondary: #6b7280;
+  --border: #e5e7eb;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(109,40,217,0.10), 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 40px rgba(109,40,217,0.12), 0 4px 12px rgba(0,0,0,0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', 'Inter', sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle dot-grid background pattern */
+.app-background {
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(109, 40, 217, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.07) 0%, transparent 50%),
+    radial-gradient(#c4b5fd 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 28px 28px;
+}
+
+/* Display font for headings */
+.font-display {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Card style */
+.card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Smooth page fade-in */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up {
+  animation: fadeUp 0.4s ease both;
+}
+
+.fade-up-delay-1 { animation-delay: 0.05s; }
+.fade-up-delay-2 { animation-delay: 0.10s; }
+.fade-up-delay-3 { animation-delay: 0.15s; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+/* Focus ring */
+*:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
+
+/* ── Extended fade-up delays ── */
+.fade-up-delay-4 { animation-delay: 0.20s; }
+.fade-up-delay-5 { animation-delay: 0.28s; }
+.fade-up-delay-6 { animation-delay: 0.36s; }
+
+/* ── Float animation for hero shapes ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-18px) rotate(2deg); }
+  66%       { transform: translateY(-8px) rotate(-1deg); }
+}
+
+/* ── Pulse for the live badge dot ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.75); }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* ── Slow gradient shift on hero background ── */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero-gradient-animated {
+  background-size: 200% 200%;
+  animation: gradient-shift 12s ease infinite;
+}
+
+/* ── Hero floating shapes ── */
+.hero-shape {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero-shape-1 {
+  width: 480px; height: 480px;
+  top: -140px; right: -100px;
+  background: radial-gradient(circle, rgba(167,139,250,0.13) 0%, transparent 70%);
+  animation: float 9s ease-in-out infinite;
+}
+.hero-shape-2 {
+  width: 360px; height: 360px;
+  bottom: -110px; left: 6%;
+  background: radial-gradient(circle, rgba(109,40,217,0.14) 0%, transparent 70%);
+  animation: float 11s ease-in-out infinite reverse;
+}
+.hero-shape-3 {
+  width: 200px; height: 200px;
+  top: 22%; right: 22%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(167,139,250,0.10);
+  animation: float 13s ease-in-out infinite 2s;
+}
+.hero-shape-4 {
+  width: 90px; height: 90px;
+  top: 58%; left: 4%;
+  background: rgba(245,158,11,0.08);
+  animation: float 7s ease-in-out infinite 1s;
+}
+.hero-shape-5 {
+  width: 150px; height: 150px;
+  top: 32%; left: 58%;
+  background: rgba(109,40,217,0.07);
+  border: 1px solid rgba(167,139,250,0.06);
+  animation: float 10s ease-in-out infinite 3s;
+}
+
+/* ── Subtle dot-grid overlay for hero ── */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 52px 52px;
+  pointer-events: none;
+}
+
+/* ── Scroll indicator ── */
+.scroll-indicator {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px; height: 40px;
+  border: 2px solid rgba(255,255,255,0.18);
+  border-radius: 100px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 6px;
+}
+.scroll-dot {
+  width: 4px; height: 8px;
+  background: #fbbf24;
+  border-radius: 100px;
+  animation: scroll-bounce 1.9s ease-in-out infinite;
+}
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0);    opacity: 1; }
+  50%       { transform: translateY(13px); opacity: 0.25; }
+}
+
+/* ── Shimmer for loading skeletons ── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* ── Scale-in entrance ── */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.scale-in {
+  animation: scaleIn 0.4s ease both;
+}
+
+/* ── Slideshow progress bar ── */
+@keyframes slideProgress {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+/* ═══════════════════════════════════════════════
+   BOUNCING / FLOATING CIRCLE ANIMATIONS
+   ═══════════════════════════════════════════════ */
+
+/* Smooth bounce up-down */
+@keyframes bounceBall {
+  0%, 100% { transform: translateY(0px)   scale(1);    }
+  40%       { transform: translateY(-60px) scale(1.06); }
+  70%       { transform: translateY(-30px) scale(0.97); }
+}
+
+/* Diagonal drift with bounce feel */
+@keyframes driftA {
+  0%   { transform: translate(0px,    0px)   scale(1);    }
+  20%  { transform: translate(55px,  -70px)  scale(1.08); }
+  45%  { transform: translate(30px,   40px)  scale(0.94); }
+  70%  { transform: translate(-45px, -25px)  scale(1.05); }
+  100% { transform: translate(0px,    0px)   scale(1);    }
+}
+@keyframes driftB {
+  0%   { transform: translate(0px,   0px)   scale(1);    }
+  25%  { transform: translate(-60px, 50px)  scale(1.10); }
+  55%  { transform: translate(40px, -35px)  scale(0.92); }
+  80%  { transform: translate(20px,  55px)  scale(1.04); }
+  100% { transform: translate(0px,   0px)   scale(1);    }
+}
+@keyframes driftC {
+  0%   { transform: translate(0px,  0px)   scale(1);    }
+  30%  { transform: translate(70px, 45px)  scale(1.12); }
+  65%  { transform: translate(-30px,-55px) scale(0.90); }
+  100% { transform: translate(0px,  0px)   scale(1);    }
+}
+
+/* Pulse breathe */
+@keyframes breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1);    }
+  50%       { opacity: 0.95; transform: scale(1.18); }
+}
+
+/* Slow spin + drift for large orbs */
+@keyframes spinDrift {
+  0%   { transform: translate(0px, 0px)    rotate(0deg);   }
+  33%  { transform: translate(35px,-45px)  rotate(120deg); }
+  66%  { transform: translate(-40px,30px)  rotate(240deg); }
+  100% { transform: translate(0px, 0px)    rotate(360deg); }
+}
+
+/* ── Hero landing page orbs ── */
+.hero-orb-1 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  width: 520px; height: 520px; top: -130px; right: -90px;
+  background: radial-gradient(circle, rgba(124,58,237,0.22) 0%, rgba(99,102,241,0.10) 40%, transparent 70%);
+  animation: driftA 12s ease-in-out infinite;
+  filter: blur(2px);
+}
+.hero-orb-2 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  width: 380px; height: 380px; bottom: -90px; left: 4%;
+  background: radial-gradient(circle, rgba(167,139,250,0.18) 0%, rgba(124,58,237,0.08) 45%, transparent 70%);
+  animation: driftB 16s ease-in-out infinite 1.5s;
+  filter: blur(1px);
+}
+.hero-orb-3 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  width: 220px; height: 220px; top: 30%; right: 25%;
+  background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 65%);
+  animation: bounceBall 7s ease-in-out infinite 0.5s;
+}
+
+/* ── CTA / bottom section orbs ── */
+.cta-orb-1 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  top: -120px; right: -80px; width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(167,139,250,0.20) 0%, rgba(124,58,237,0.08) 45%, transparent 70%);
+  animation: driftA 14s ease-in-out infinite;
+  filter: blur(2px);
+}
+.cta-orb-2 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  bottom: -100px; left: 15%; width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(124,58,237,0.16) 0%, rgba(99,102,241,0.06) 50%, transparent 70%);
+  animation: driftB 18s ease-in-out infinite 2s;
+  filter: blur(1px);
+}
+.cta-orb-3 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  top: 35%; right: 20%; width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 65%);
+  animation: bounceBall 6s ease-in-out infinite 1s;
+}
+.cta-orb-4 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  top: 8%; left: 6%; width: 140px; height: 140px;
+  background: radial-gradient(circle, rgba(167,139,250,0.14) 0%, transparent 65%);
+  animation: breathe 5s ease-in-out infinite 0.8s;
+}
+.cta-orb-5 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  bottom: 15%; right: 8%; width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(196,181,253,0.18) 0%, transparent 65%);
+  animation: bounceBall 4.5s ease-in-out infinite 2.5s;
+}
+.cta-orb-6 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  top: 60%; left: 30%; width: 80px; height: 80px;
+  background: radial-gradient(circle, rgba(124,58,237,0.20) 0%, transparent 65%);
+  animation: driftC 9s ease-in-out infinite 3s;
+}
+
+/* ── Listings page glow orbs ── */
+@keyframes listingsGlow {
+  0%, 100% { opacity: 0.55; transform: scale(1)    translateY(0px);  }
+  50%       { opacity: 0.95; transform: scale(1.14) translateY(-22px); }
+}
+.hero-glow-1 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  top: -80px; right: 5%; width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 65%);
+  animation: listingsGlow 9s  ease-in-out infinite;
+}
+.hero-glow-2 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  bottom: -60px; left: 10%; width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(167,139,250,0.14) 0%, transparent 65%);
+  animation: listingsGlow 13s ease-in-out infinite 3s;
+}
+.hero-glow-3 {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  top: 30%; left: 40%; width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 65%);
+  animation: listingsGlow 17s ease-in-out infinite 6s;
+}
+
+/* ═══════════════════════════════════════════════
+   SMALL FLOATING BALLS — visible glowing dots
+   ═══════════════════════════════════════════════ */
+
+@keyframes ballFloat1 {
+  0%, 100% { transform: translateY(0px)   translateX(0px);   }
+  25%       { transform: translateY(-45px) translateX(18px);  }
+  50%       { transform: translateY(-80px) translateX(-10px); }
+  75%       { transform: translateY(-40px) translateX(25px);  }
+}
+@keyframes ballFloat2 {
+  0%, 100% { transform: translateY(0px)    translateX(0px);  }
+  33%       { transform: translateY(-60px)  translateX(-20px);}
+  66%       { transform: translateY(-30px)  translateX(30px); }
+}
+@keyframes ballFloat3 {
+  0%, 100% { transform: translateY(0px)   translateX(0px);  opacity: 0.7; }
+  40%       { transform: translateY(-70px) translateX(15px); opacity: 1;   }
+  80%       { transform: translateY(-20px) translateX(-25px);opacity: 0.5; }
+}
+@keyframes ballFloat4 {
+  0%, 100% { transform: translateY(0px)   scale(1);    }
+  50%       { transform: translateY(-55px) scale(1.3);  }
+}
+
+/* Shared ball base */
+.lp-ball {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(0.5px);
+}
+
+/* Individual balls — distinct sizes, positions, colours */
+.lp-ball-1 {
+  width: 18px; height: 18px;
+  top: 18%; right: 12%;
+  background: radial-gradient(circle, rgba(167,139,250,0.90), rgba(124,58,237,0.40));
+  box-shadow: 0 0 12px 4px rgba(167,139,250,0.45);
+  animation: ballFloat1 6s ease-in-out infinite;
+}
+.lp-ball-2 {
+  width: 12px; height: 12px;
+  top: 55%; right: 28%;
+  background: radial-gradient(circle, rgba(196,181,253,0.95), rgba(99,102,241,0.50));
+  box-shadow: 0 0 10px 3px rgba(196,181,253,0.40);
+  animation: ballFloat2 8s ease-in-out infinite 1s;
+}
+.lp-ball-3 {
+  width: 22px; height: 22px;
+  top: 35%; left: 8%;
+  background: radial-gradient(circle, rgba(124,58,237,0.85), rgba(79,70,229,0.35));
+  box-shadow: 0 0 16px 5px rgba(124,58,237,0.40);
+  animation: ballFloat3 7s ease-in-out infinite 0.5s;
+}
+.lp-ball-4 {
+  width: 10px; height: 10px;
+  top: 72%; right: 18%;
+  background: radial-gradient(circle, rgba(167,139,250,1), rgba(124,58,237,0.60));
+  box-shadow: 0 0 8px 3px rgba(167,139,250,0.50);
+  animation: ballFloat4 5s ease-in-out infinite 2s;
+}
+.lp-ball-5 {
+  width: 16px; height: 16px;
+  top: 22%; left: 35%;
+  background: radial-gradient(circle, rgba(99,102,241,0.90), rgba(79,70,229,0.40));
+  box-shadow: 0 0 12px 4px rgba(99,102,241,0.40);
+  animation: ballFloat1 9s ease-in-out infinite 3s;
+}
+.lp-ball-6 {
+  width: 8px; height: 8px;
+  top: 60%; left: 20%;
+  background: radial-gradient(circle, rgba(196,181,253,1), rgba(167,139,250,0.70));
+  box-shadow: 0 0 8px 2px rgba(196,181,253,0.45);
+  animation: ballFloat2 6.5s ease-in-out infinite 1.8s;
+}
+
+/* ── Same balls for CTA section ── */
+.cta-ball { position: absolute; border-radius: 50%; pointer-events: none; }
+.cta-ball-1 {
+  width: 16px; height: 16px; top: 15%; right: 15%;
+  background: radial-gradient(circle, rgba(167,139,250,0.90), rgba(124,58,237,0.40));
+  box-shadow: 0 0 12px 4px rgba(167,139,250,0.40);
+  animation: ballFloat1 7s ease-in-out infinite;
+}
+.cta-ball-2 {
+  width: 10px; height: 10px; bottom: 20%; left: 12%;
+  background: radial-gradient(circle, rgba(196,181,253,0.95), rgba(99,102,241,0.50));
+  box-shadow: 0 0 8px 3px rgba(196,181,253,0.40);
+  animation: ballFloat2 9s ease-in-out infinite 1.5s;
+}
+.cta-ball-3 {
+  width: 20px; height: 20px; top: 45%; left: 45%;
+  background: radial-gradient(circle, rgba(124,58,237,0.85), rgba(79,70,229,0.35));
+  box-shadow: 0 0 14px 5px rgba(124,58,237,0.35);
+  animation: ballFloat3 8s ease-in-out infinite 2s;
+}
+.cta-ball-4 {
+  width: 12px; height: 12px; bottom: 30%; right: 35%;
+  background: radial-gradient(circle, rgba(167,139,250,1), rgba(124,58,237,0.60));
+  box-shadow: 0 0 10px 3px rgba(167,139,250,0.45);
+  animation: ballFloat4 6s ease-in-out infinite 0.8s;
+}
+
+/* ── Gradient text utility ── */
+.grad-text {
+  background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Card stagger entrance ── */
+@keyframes cardEnterFull {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)     scale(1);    }
+}
+.card-enter {
+  animation: cardEnterFull 0.45s cubic-bezier(0.22,1,0.36,1) both;
+}

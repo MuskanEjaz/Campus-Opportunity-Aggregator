@@ -1,0 +1,17 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'>
+  <defs>
+    <linearGradient id='bg' x1='0%' y1='0%' x2='100%' y2='100%'>
+      <stop offset='0%' stop-color='#7c3aed'/>
+      <stop offset='100%' stop-color='#4f46e5'/>
+    </linearGradient>
+  </defs>
+  <rect width='512' height='512' rx='96' fill='url(%23bg)'/>
+  <!-- Cap flat top -->
+  <polygon points='256,130 420,210 256,290 92,210' fill='white' opacity='0.95'/>
+  <!-- Cap body/gown -->
+  <path d='M160,228 L160,330 C160,330 200,380 256,380 C312,380 352,330 352,330 L352,228 L256,268 Z' fill='white' opacity='0.88'/>
+  <!-- Tassel string -->
+  <line x1='420' y1='210' x2='420' y2='300' stroke='white' stroke-width='12' stroke-linecap='round' opacity='0.75'/>
+  <!-- Tassel end -->
+  <circle cx='420' cy='310' r='14' fill='white' opacity='0.75'/>
+</svg>
